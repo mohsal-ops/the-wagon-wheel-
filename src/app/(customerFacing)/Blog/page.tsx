@@ -73,7 +73,7 @@ export default async function BlogPage() {
       )}
 
       {/* BRAND STATEMENT */}
-      <section className="bg-brand text-black py-20 text-center">
+      <section className="bg-stone-200 text-black py-20 text-center">
         <h3 className="text-4xl font-bold">
           This is not fast food. This is culture.
         </h3>

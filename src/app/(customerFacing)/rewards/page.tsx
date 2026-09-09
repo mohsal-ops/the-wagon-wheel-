@@ -26,10 +26,10 @@ export default async function RewardsPage() {
 
         <div className="relative z-10">
           <h1 className="text-4xl md:text-6xl font-extrabold tracking-tight">
-            Eat More. <span className="text-white">Earn More.</span>
+            Eat More. <span className="text-stone-300">Earn More.</span>
           </h1>
 
-          <p className="mt-6 max-w-2xl mx-auto text-brand text-lg">
+          <p className="mt-6 max-w-2xl mx-auto text-lg">
             Every order earns points that turn into free The Wagon Wheel meals.
           </p>
         </div>
@@ -60,7 +60,7 @@ export default async function RewardsPage() {
 
         {/* REWARD TIERS */}
         <div className="space-y-6">
-          <h2 className="text-3xl font-bold text-gray-900">
+          <h2 className="text-3xl font-bold text-foreground">
             Redeem your points
           </h2>
 

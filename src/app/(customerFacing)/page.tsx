@@ -13,7 +13,7 @@ import HomeFeaturedSkeleton from "./_skeletons/HomeFeaturedSkeleton";
 import db from "@/db/db";
 import { getBusinessHours } from "@/lib/getHours";
 import { getSiteImage } from "@/lib/getSiteImages";
-import { getSiteText } from "@/lib/siteSettings";
+import { getLogoUrl, getSiteText } from "@/lib/siteSettings";
 import { SITE_CONFIG } from "@/lib/siteConfig";
 import {
   TopSection,
@@ -91,7 +91,7 @@ function FaqSchema() {
 function SectionDivider() {
   return (
     <div className="w-full flex justify-center px-4">
-      <div className="h-px w-full max-w-[85vw] bg-linear-to-r from-transparent via-stone-300 to-transparent" />
+      <div className="h-px w-full max-w-[85vw] bg-linear-to-r from-transparent via-border to-transparent" />
     </div>
   );
 }
@@ -135,16 +135,22 @@ export default async function Home() {
   // single indexed lookup, cheap enough to await directly here.
   const [
     heroImage,
+    heroImage2,
+    heroImage3,
     orderImage,
     featureBreakfast,
     featureComfort,
     homeText,
+    logoUrl,
   ] = await Promise.all([
     getSiteImage("home_hero"),
+    getSiteImage("home_hero_2"),
+    getSiteImage("home_hero_3"),
     getSiteImage("home_order"),
     getSiteImage("home_feature_1"),
     getSiteImage("home_feature_2"),
     getSiteText(),
+    getLogoUrl(),
   ]);
 
   return (
@@ -152,20 +158,22 @@ export default async function Home() {
       <FaqSchema />
       <TopSection
         heroImage={heroImage}
+        heroImages={[heroImage, heroImage2, heroImage3]}
         headline={homeText.headline}
         subheadline={homeText.subheadline}
+        logoUrl={logoUrl}
       />
       <SectionDivider />
       <Suspense fallback={<HomeFeaturedSkeleton />}>
         <FeaturedProductsSection />
       </Suspense>
       <SectionDivider />
-      <Suspense fallback={<div className="sm:w-[85%] w-full h-100 bg-gray-200 rounded-3xl animate-pulse" />}>
+      <Suspense fallback={<div className="sm:w-[85%] w-full h-100 bg-muted rounded-3xl animate-pulse" />}>
         <GallerySection />
       </Suspense>
       <SectionDivider />
       <FadeIn delay={100}>
-        <Suspense fallback={<div className="h-96 w-full md:w-[85vw] bg-gray-100 rounded-4xl animate-pulse" />}>
+        <Suspense fallback={<div className="h-96 w-full md:w-[85vw] bg-muted rounded-4xl animate-pulse" />}>
           <ReviewsDataSection />
         </Suspense>
       </FadeIn>
@@ -200,7 +208,7 @@ export default async function Home() {
         </div>
       </FadeIn>
       <SectionDivider />
-      <Suspense fallback={<div className="h-40 w-full sm:w-[75%] animate-pulse bg-stone-100 rounded-4xl" />}>
+      <Suspense fallback={<div className="h-40 w-full sm:w-[75%] animate-pulse bg-muted rounded-4xl" />}>
         <LocationSection />
       </Suspense>
     </div>
