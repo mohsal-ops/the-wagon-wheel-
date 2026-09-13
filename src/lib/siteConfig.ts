@@ -54,7 +54,7 @@ export const SITE_CONFIG = {
   trademark: "The Wagon Wheel",
 
   // Admin intro animation: "burger" (fast food) | "coffee" (café) | "pizza" (pizzeria)
-  loaderStyle: "burger",
+  loaderStyle: "grill",
 
   defaultTheme: "dark" as "light" | "dark",
 
