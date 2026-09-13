@@ -1,65 +1,103 @@
-// Single source of truth for every brand-specific value on the site.
-// To onboard a new restaurant client, this is the only file that should
-// need to change (plus swapping image assets in /public).
+import { atLeast, type PackageTier } from "./packages";
+
+// Product tier this client is on. The panel patches this line per client at
+// provision time. It gates which site + admin sections show (via `minTier`
+// below and the admin nav). Defaults to PRO so the template/demo and any
+// pre-tier client that lacks this line keep the full feature set.
+const PACKAGE_TIER: PackageTier = "PRO";
 
 // Optional sections. Flip a flag to false to remove that section from the
 // navbar + footer (the new-project tool sets these per client). The route
-// still exists, it is simply not linked.
+// still exists, it is simply not linked. Tier gating (`minTier`) is layered on
+// top: a section shows only when its flag is on AND the client's tier reaches
+// it, so FEATURES acts as a per-client on/off *within* the tier's ceiling.
 const FEATURES = {
   catering: true,
-  giftCard: true,
+  giftCard: false,
   rewards: true,
-  blog: true,
+  blog: false,
 };
-type FeatureKey = keyof typeof FEATURES;
 
-type NavLink = { label: string; href: string; feature?: FeatureKey };
+type FeatureKey = keyof typeof FEATURES;
+type NavLink = { label: string; href: string; feature?: FeatureKey; minTier?: PackageTier };
 
 const ALL_NAV_LINKS: NavLink[] = [
   { label: "Home", href: "/" },
   { label: "Menu", href: "/Menu" },
-  { label: "Catering", href: "/catering", feature: "catering" },
-  { label: "Gift Card", href: "/GiftCard", feature: "giftCard" },
-  { label: "Rewards", href: "/rewards", feature: "rewards" },
-  { label: "Press", href: "/Blog", feature: "blog" },
+  { label: "Catering", href: "/catering", feature: "catering", minTier: "STANDARD" },
+  { label: "Gift Cards", href: "/GiftCard", feature: "giftCard", minTier: "STANDARD" },
+  { label: "Rewards", href: "/rewards", feature: "rewards", minTier: "PRO" },
+  { label: "Press", href: "/Blog", feature: "blog", minTier: "STANDARD" },
   { label: "Our Story", href: "/story" },
 ];
 
 const ALL_FOOTER_LINKS: NavLink[] = [
   { label: "Menu", href: "/Menu" },
-  { label: "Catering", href: "/catering", feature: "catering" },
-  { label: "Gift Cards", href: "/GiftCard", feature: "giftCard" },
+  { label: "Catering", href: "/catering", feature: "catering", minTier: "STANDARD" },
+  { label: "Gift Cards", href: "/GiftCard", feature: "giftCard", minTier: "STANDARD" },
   { label: "Terms", href: "/terms" },
 ];
 
-const enabled = (l: NavLink) => !l.feature || FEATURES[l.feature];
+// A link shows when its feature flag is on (or it has none) AND the client's
+// tier reaches its minTier (or it has none).
+const enabled = (l: NavLink) =>
+  (!l.feature || FEATURES[l.feature]) && (!l.minTier || atLeast(PACKAGE_TIER, l.minTier));
 const pickLink = ({ label, href }: NavLink) => ({ label, href });
 
 export const SITE_CONFIG = {
   // Brand
   name: "The Wagon Wheel",
-  tagline: "Eagle Pass' viral Texas BBQ",
+  tagline: "EAGLE PASS' VIRAL TEXAS BBQ",
   subTagline:
     "Slow-smoked brisket, sausage, ribs, and Texas-size chicken fried steaks in Eagle Pass, TX.",
-  legalName: "The Wagon Wheel",
+  legalName: "The Wagon Wheel LLC",
   trademark: "The Wagon Wheel",
 
   // Admin intro animation: "burger" (fast food) | "coffee" (café) | "pizza" (pizzeria)
   loaderStyle: "burger",
 
-  // Main call-to-action button label, used on every "menu" button across the
-  // site. Set it to whatever fits: "Order now", "View our menu", "See the menu"…
-  menuCtaLabel: "Order now",
+  defaultTheme: "dark" as "light" | "dark",
+
+  // Main call-to-action button label
+  menuCtaLabel: "Order online",
+
+  // Loyalty / rewards program
+  loyalty: {
+    incentive: "free brisket rewards points, member specials, and Texas combo discounts",
+  },
+
+  // Inline catering menu shown on /catering
+  catering: {
+    pdfUrl: "",
+    animation: "grill",
+    menu: [
+      {
+        title: "Slow-Smoked BBQ Party Trays",
+        note: "Smoked low and slow over Texas post oak, served with pickles, onions & signature house BBQ sauce",
+        items: [
+          { name: "Smoked Texas Brisket Tray (5 lbs)", qty: "Serves 10-12", price: 120 },
+          { name: "Texas Sausage & Pork Ribs Combination Tray", qty: "Serves 10-12", price: 105 },
+          { name: "Texas-Size Chicken Fried Steak Platter (10 pcs)", qty: "Serves 8-10", price: 95 },
+        ],
+      },
+      {
+        title: "Classic Texas Sides & Desserts",
+        items: [
+          { name: "Loaded Mac & Cheese Tray", qty: "Serves 10-12", price: 40 },
+          { name: "Sweet Cream Corn Tray", qty: "Serves 10-12", price: 35 },
+          { name: "Homemade Peach Cobbler Tray", qty: "Serves 10-12", price: 45 },
+        ],
+      },
+    ] as { title: string; note?: string; items: { name: string; qty?: string; price: number }[] }[],
+  },
 
   // Contact & Location
-  // NOTE: exact street address + phone are placeholders - update with the real ones.
-
   address: "1824 Del Rio Blvd, Eagle Pass, TX 78852",
   street: "1824 Del Rio Blvd",
   city: "Eagle Pass",
   state: "TX",
   zip: "78852",
-  phone: "830-513-7250",
+  phone: "(830) 513-7250",
   email: "wws78852@gmail.com",
   cateringEmail: "wws78852@gmail.com",
   timezone: "America/Chicago",
@@ -77,8 +115,7 @@ export const SITE_CONFIG = {
 
   // SEO
   siteUrl: "https://thewagonwheel.co",
-  seoTitle:
-    "The Wagon Wheel | Texas BBQ & Chicken Fried Steaks in Eagle Pass, TX",
+  seoTitle: "The Wagon Wheel | Texas BBQ & Chicken Fried Steaks in Eagle Pass, TX",
   seoDescription:
     "The Wagon Wheel serves slow-smoked Texas brisket, sausage, pork ribs, and Texas-size chicken fried steaks in Eagle Pass, TX. Eagle Pass' viral BBQ destination.",
   seoKeywords: [
@@ -91,16 +128,26 @@ export const SITE_CONFIG = {
   ],
   ogImage: "/general/generalPages/mainImage.jpg",
 
-  // Structured-data / business info (used in JSON-LD)
+  // Structured-data / business info
   cuisines: ["Barbecue", "American", "Texan"],
   priceRange: "$$",
 
-  // Colors (Tailwind hex values)
+  // Outreach conversion layer
+  outreach: {
+    enabled: true,
+    discountReason: "review",
+    trialLengthDays: 14,
+    calendlyUrl: "https://calendly.com/popdeveloper54/10-minute-meet",
+    signalKey: "the-wagon-wheel",
+    savings: { estimatedOrdersPerDay: 35, avgOrderValue: 28, commissionPct: 20 },
+  },
+
+  // Colors (Crimson Red, Dark Charcoal & Deep Amber)
   primaryColor: "#b91c1c",
   secondaryColor: "#1a1a1a",
   accentColor: "#dc2626",
 
-  // Hours (used for open/closed status) - hour values are 24h local time
+  // Hours (used for open/closed status) - 24h local time (Closed Mondays)
   hours: [
     { day: "Sunday", open: 11, close: 18 },
     { day: "Monday", open: null, close: null },
@@ -113,10 +160,33 @@ export const SITE_CONFIG = {
 
   // Home page text sections
   home: {
-    heroHeadline: "Eagle Pass' viral Texas BBQ",
-    heroSubHeadline: "smoked brisket & Texas-size chicken fried steaks",
+    heroHeadline: "EAGLE PASS' VIRAL TEXAS BBQ",
+    heroSubHeadline: "Slow-smoked brisket & Texas-size steaks.",
+    heroSlides: [
+      {
+        image: "/general/generalPages/mainImage.jpg",
+        headline: "EAGLE PASS' VIRAL TEXAS BBQ",
+        subheadline: "Slow-smoked brisket & Texas-size steaks.",
+        ctaLabel: "Order online",
+        ctaHref: "/Menu",
+      },
+      {
+        image: "/general/generalPages/enjoy.jpg",
+        headline: "Low & Slow Texas Post Oak BBQ",
+        subheadline: "Brisket, sausage, ribs, and homemade BBQ sauce.",
+        ctaLabel: "See Menu",
+        ctaHref: "/Menu",
+      },
+      {
+        image: "/general/generalPages/vibe.jpg",
+        headline: "Texas-Size Chicken Fried Steaks",
+        subheadline: "Hand-breaded, cooked to order, and smothered in gravy.",
+        ctaLabel: "See Catering",
+        ctaHref: "/catering",
+      },
+    ] as { image: string; headline: string; subheadline: string; ctaLabel: string; ctaHref: string }[],
     galleryTitle: "The Wagon Wheel",
-    gallerySubtitle: "Eagle Pass Texas BBQ",
+    gallerySubtitle: "1824 Del Rio Blvd, Eagle Pass, TX",
     distinctiveFeatures: [
       {
         title: "Slow-smoked Texas BBQ",
@@ -155,21 +225,24 @@ export const SITE_CONFIG = {
       },
       {
         question: "Where are you located?",
-        answer: "We're in Eagle Pass, TX.",
+        answer: "We are located at 1824 Del Rio Blvd, Eagle Pass, TX 78852.",
       },
     ],
   },
 
-  // Which optional sections are enabled (see FEATURES above)
+  // Which optional sections are enabled
   features: FEATURES,
 
-  // Navbar links (derived from FEATURES)
+  // Product tier - gates site + admin sections
+  packageTier: PACKAGE_TIER,
+
+  // Navbar links
   navLinks: ALL_NAV_LINKS.filter(enabled).map(pickLink),
 
   // Footer
   footer: {
     get copyright() {
-      return `© ${new Date().getFullYear()} The Wagon Wheel. All rights reserved.`;
+      return `© ${new Date().getFullYear()} The Wagon Wheel LLC. All rights reserved.`;
     },
     links: ALL_FOOTER_LINKS.filter(enabled).map(pickLink),
   },
