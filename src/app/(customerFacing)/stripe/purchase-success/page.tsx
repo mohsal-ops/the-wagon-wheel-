@@ -4,6 +4,9 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { requireStripe } from "@/lib/stripeConfig";
 import { finalizeCart } from "@/lib/finalizeOrder";
+import { isEnabled } from "@/lib/flags";
+import PushOptIn from "@/components/pwa/PushOptIn";
+import MarkOrdered from "@/components/pwa/MarkOrdered";
 
 
 export default async function Success(props: any) {
@@ -36,6 +39,7 @@ export default async function Success(props: any) {
   );
 
   const isSuccess = paymentIntent.status === "succeeded";
+  const pushOn = isSuccess && (await isEnabled("web_push"));
 
   return (
     <div className="flex max-w-5xl items-center justify-center h-96 pt-20 w-full space-y-10">
@@ -45,6 +49,15 @@ export default async function Success(props: any) {
         </div>
         <div className="text-lg tracking-wide font-medium text-center space-y-2">
           <h1>Thanks for your order</h1>
+          {isSuccess && <MarkOrdered />}
+          {pushOn && (
+            <PushOptIn
+              audience="customer"
+              cartId={cart.id}
+              label={cart.uberQuoteId ? "Notify me when it's on the way" : "Notify me when it's ready"}
+              className="flex flex-col items-center pt-1"
+            />
+          )}
           {isSuccess && cart.uberDeliveryId && (
             <div className="text-sm font-normal">
               <p>
