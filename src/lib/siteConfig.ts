@@ -45,6 +45,7 @@ const enabled = (l: NavLink) =>
 const pickLink = ({ label, href }: NavLink) => ({ label, href });
 
 export const SITE_CONFIG = {
+  theme: "pop-bento", // design skin (added by panel; read loosely by resolveThemeSlug)
   // Brand
   name: "The Wagon Wheel",
   tagline: "EAGLE PASS' VIRAL TEXAS BBQ",
