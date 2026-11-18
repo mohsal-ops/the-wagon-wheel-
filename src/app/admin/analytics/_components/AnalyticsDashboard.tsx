@@ -13,6 +13,7 @@ import type {
   TrafficData, DailyPoint, EngagementData, TrafficSource,
   PageData, ConversionData, DeviceData, SeoData, PageSpeedData,
 } from "@/lib/analytics";
+import { SITE_CONFIG } from "@/lib/siteConfig";
 
 // ── Animation variants ────────────────────────────────────────────────────────
 
@@ -169,7 +170,7 @@ export function AnalyticsDashboard({
       >
         <div>
           <p className="text-[10px] font-semibold uppercase tracking-[0.14em] text-muted-foreground mb-1">
-            The Wagon Wheel
+            {SITE_CONFIG.name}
           </p>
           <h1 className="text-2xl font-semibold tracking-tight">Website Analytics</h1>
         </div>

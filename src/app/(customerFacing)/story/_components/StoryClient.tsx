@@ -25,7 +25,7 @@ export default function StoryClient({
       <section className="relative w-full h-[90vh] flex items-end justify-start">
         <Image
           src={images.story_hero}
-          alt="The Wagon Wheel story hero"
+          alt={`${SITE_CONFIG.name} story`}
           fill
           priority
           className="object-cover brightness-[0.45]"
@@ -51,8 +51,8 @@ export default function StoryClient({
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.2 }}
             className="text-5xl md:text-7xl font-bold leading-tight mb-6"
           >
-            Homemade with<br />
-            <span className="text-brand">Love</span>, Every Day
+            Made Fresh<br />
+            <span className="text-brand">For You</span>, Every Day
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
@@ -60,8 +60,8 @@ export default function StoryClient({
             transition={{ duration: 0.7, ease: "easeOut", delay: 0.35 }}
             className="text-lg md:text-xl text-gray-300 max-w-2xl leading-relaxed"
           >
-            Good food brings people together. At Pam&apos;s Kitchen, every plate
-            is made from scratch and served like family.
+            Good food brings people together. At {SITE_CONFIG.name}, every
+            order is made in our kitchen when you place it.
           </motion.p>
         </motion.div>
       </section>
@@ -79,18 +79,15 @@ export default function StoryClient({
             How It Started
           </p>
           <h2 className="text-3xl md:text-4xl font-bold leading-snug">
-            Born from a love of home cooking
+            Born from a love of good food
           </h2>
           <p className="text-gray-600 text-lg leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pam&apos;s
-            Kitchen began with a simple idea: serve fresh, homemade meals that
-            taste like they came straight from a family table.
+            {SITE_CONFIG.name} started with a simple idea: serve {SITE_CONFIG.city}
+            food we&apos;re proud of, cooked fresh and served with care.
           </p>
           <p className="text-gray-600 text-lg leading-relaxed">
-            Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
-            From all-day breakfast to hand-pressed burgers and daily specials,
-            everything is made from scratch with care - the way comfort food is
-            meant to be.
+            Order online for pickup straight from our own website, or come see
+            us at {SITE_CONFIG.address}.
           </p>
         </motion.div>
 
@@ -103,7 +100,7 @@ export default function StoryClient({
         >
           <Image
             src={images.story_origin}
-            alt="The Wagon Wheel experience"
+            alt={`${SITE_CONFIG.name} food`}
             width={800}
             height={600}
             className="rounded-3xl object-top object-cover w-full h-full aspect-4/3"
@@ -194,13 +191,11 @@ export default function StoryClient({
           className="max-w-3xl mx-auto"
         >
           <p className="text-2xl md:text-4xl font-bold leading-snug">
-            &quot;Pam&apos;s Kitchen is more than a restaurant
-            <span className="text-brand"> it&apos;s home.&quot;</span>
+            &quot;{SITE_CONFIG.name} is more than a restaurant,
+            <span className="text-brand"> it&apos;s a place to share a meal.&quot;</span>
           </p>
           <p className="mt-6 text-gray-400 text-lg leading-relaxed">
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
-            eiusmod tempor incididunt ut labore. Homemade comfort food, served
-            fresh every day in Eagle Pass, Texas.
+            Fresh food, made to order in {SITE_CONFIG.city}.
           </p>
         </motion.blockquote>
       </section>
@@ -227,12 +222,12 @@ export default function StoryClient({
             {
               icon: "🏡",
               title: "Family First",
-              text: "Lorem ipsum dolor sit amet. Every recipe is made the way home tastes - with love, care, and nothing to hide.",
+              text: "Every plate is made the way we'd make it for our own family, with care and nothing to hide.",
             },
             {
               icon: "🍳",
               title: "Fresh Every Day",
-              text: "No shortcuts. Breakfast, burgers, and daily specials made from scratch, fresh every single day.",
+              text: "No shortcuts. Every order is prepared fresh in our kitchen when you place it.",
             },
             {
               icon: "🤝",
@@ -266,7 +261,7 @@ export default function StoryClient({
         >
           <Image
             src={images.story_closing}
-            alt="The Wagon Wheel dining experience"
+            alt={`${SITE_CONFIG.name} dining`}
             width={1600}
             height={700}
             className="w-full object-cover max-h-125"
@@ -277,9 +272,8 @@ export default function StoryClient({
               This Is Just the Beginning
             </h2>
             <p className="text-gray-300 text-lg leading-relaxed mb-8">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Eagle Pass&apos;s
-              appetite for fresh homemade food is wide open - and Pam&apos;s Kitchen
-              is here to fill it, one plate at a time.
+              {SITE_CONFIG.name} is here to serve {SITE_CONFIG.city}, one plate
+              at a time.
             </p>
             <a
               href="/Menu"

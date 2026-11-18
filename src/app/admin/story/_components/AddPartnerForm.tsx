@@ -4,6 +4,7 @@ import { useActionState, useRef, useState } from "react";
 import { addPartner } from "../_actions/partnerActions";
 import Image from "next/image";
 import { Plus, ChevronDown, ChevronUp } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/siteConfig";
 
 type State = { message?: string; error?: string } | undefined;
 
@@ -139,7 +140,7 @@ export default function AddPartnerForm({
                       ? "Introduce this person..."
                       : i === 1
                       ? "Their journey or background..."
-                      : "Their vision and role at The Wagon Wheel..."
+                      : `Their vision and role at ${SITE_CONFIG.name}...`
                   }
                   rows={3}
                   className="w-full border border-stone-300 rounded-xl px-3 py-2 text-sm outline-none focus:border-stone-500 transition-colors resize-none"

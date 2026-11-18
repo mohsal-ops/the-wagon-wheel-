@@ -3,6 +3,7 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import db from "@/db/db";
 import { revalidatePath } from "next/cache";
+import { SITE_CONFIG } from "@/lib/siteConfig";
 
 export async function POST(req: NextRequest) {
   try {
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
     });
 
     await transporter.sendMail({
-      from: `"The Wagon Wheel Catering" <${process.env.SMTP_USER}>`,
+      from: `"${SITE_CONFIG.name.replace(/"/g, "")} Catering" <${process.env.SMTP_USER}>`,
       to: process.env.CATERING_EMAIL,
       subject: "New Catering Request",
       html: `
