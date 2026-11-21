@@ -10,7 +10,7 @@
     "lint": "next lint",
     "seed:defaults": "node prisma/seed.defaults.mjs",
     "new-project": "node scaffold/new-project.mjs",
-    "postinstall": "node scripts/patch-next-font.cjs && prisma generate",
+    "postinstall": "prisma generate",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
     "sandbox:square": "vite-node scripts/square-sandbox-check.ts",

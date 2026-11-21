@@ -57,10 +57,8 @@ export async function generateMetadata() {
 }
 
 function FaqSchema() {
-  // Built from the same FAQ the page shows (SITE_CONFIG.home.faq), so the
-  // answers search engines read always match this restaurant.
-  const faq = SITE_CONFIG.home.faq ?? [];
-  if (faq.length === 0) return null;
+  // Mirrors the questions/answers rendered in Frequentlyaskedquestions below -
+  // keep these in sync if that content changes.
   return (
     <script
       type="application/ld+json"
@@ -68,11 +66,40 @@ function FaqSchema() {
         __html: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "FAQPage",
-          mainEntity: faq.map((q) => ({
-            "@type": "Question",
-            name: q.question,
-            acceptedAnswer: { "@type": "Answer", text: q.answer },
-          })),
+          mainEntity: [
+            {
+              "@type": "Question",
+              name: "What are you known for?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Homemade comfort food, hand-pressed burgers, all-day breakfast, and our daily specials.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "What meals do you serve?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Breakfast (served all day), burgers, sandwiches, homemade pizza, and daily specials.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Do you offer delivery or takeout?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "Yes! We offer both pickup and delivery.",
+              },
+            },
+            {
+              "@type": "Question",
+              name: "Where are you located?",
+              acceptedAnswer: {
+                "@type": "Answer",
+                text: "We're at 1302 W 11th St, Eagle Pass, TX 79035.",
+              },
+            },
+          ],
         }),
       }}
     />
